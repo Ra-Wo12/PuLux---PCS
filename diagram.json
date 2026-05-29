@@ -16,8 +16,24 @@
       "type": "wokwi-photoresistor-sensor",
       "id": "ldr1",
       "top": -428.8,
-      "left": -229.6,
+      "left": -258.4,
       "attrs": {}
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn1",
+      "top": -336.6,
+      "left": -16.2,
+      "rotate": 90,
+      "attrs": { "color": "blue", "xray": "1", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 3.95,
+      "left": -163.2,
+      "rotate": 180,
+      "attrs": { "value": "10000" }
     }
   ],
   "connections": [
@@ -26,12 +42,18 @@
     [ "bb1:bp.50", "bb1:tp.50", "cyan", [ "v-0.9", "h85.6", "v-172.8" ] ],
     [ "esp:GND.1", "bb1:bn.1", "red", [ "v0" ] ],
     [ "bb1:bn.50", "bb1:tn.50", "red", [ "v-1.3", "h66.4", "v-172.8" ] ],
-    [ "ldr1:VCC", "bb1:tp.6", "cyan", [ "h0" ] ],
     [ "bb1:5b.j", "esp:12", "blue", [ "v0" ] ],
     [ "bb1:5t.e", "bb1:5b.f", "blue", [ "v0" ] ],
     [ "esp:3V3", "bb1:bp.1", "cyan", [ "v-47.85", "h-153.6", "v-28.8" ] ],
     [ "ldr1:AO", "bb1:5t.a", "blue", [ "h0" ] ],
-    [ "ldr1:GND", "bb1:tn.5", "black", [ "h0" ] ]
+    [ "btn1:1.r", "bb1:tp.7", "cyan", [ "v0" ] ],
+    [ "ldr1:GND", "bb1:tn.4", "black", [ "h0" ] ],
+    [ "btn1:2.l", "bb1:9t.a", "green", [ "v0", "h-48.2" ] ],
+    [ "bb1:9t.e", "bb1:9b.f", "green", [ "v0" ] ],
+    [ "bb1:9b.j", "esp:25", "green", [ "v0" ] ],
+    [ "esp:25", "r1:1", "green", [ "h-9.6", "v-28.95" ] ],
+    [ "r1:2", "esp:GND.1", "green", [ "v19.5", "h76.6" ] ],
+    [ "btn1:1.l", "ldr1:VCC", "cyan", [ "v0" ] ]
   ],
   "dependencies": {}
 }
