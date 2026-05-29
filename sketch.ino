@@ -1,17 +1,23 @@
-// Defines the pin wwhere "AO" will conect
+// Defines pins
 const int pinLDR = 12; 
+const int pinButton = 25;
+int OldValue = LOW;
 
 void setup() {
-  Serial.begin(115200); //inicializes the program
+  // Inicializes communication with terminal
+  Serial.begin(115200);
+  pinMode(pinButton, INPUT);
 }
 
 void loop() {
-  // Analog read of the LDR
-  int valorLuminosidade = analogRead(pinLDR); //pinLDR is defined as "12"
+  // Analog Reading
+  int valorLuminosidade = analogRead(pinLDR);
+  int NewValue = digitalRead(pinButton);
 
-  // Shows on terminal:
+if(NewValue == HIGH){
+  // Shows values on monitor
   Serial.print("Luminosidade: ");
   Serial.println(valorLuminosidade);
-  // Waits 2 secs for the next read
+}
   delay(2000);
 }
