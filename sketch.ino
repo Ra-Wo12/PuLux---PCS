@@ -1,17 +1,17 @@
+// Defines the pin wwhere "AO" will conect
+const int pinLDR = 12; 
+
 void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(115200);
-  Serial.println("Hello, ESP32!");
+  Serial.begin(115200); //inicializes the program
 }
 
 void loop() {
-  // These constants should match the photoresistor's "gamma" and "rl10" attributes
-const float GAMMA = 0.7;
-const float RL10 = 50;
+  // Analog read of the LDR
+  int valorLuminosidade = analogRead(pinLDR); //pinLDR is defined as "12"
 
-// Convert the analog value into lux value:
-int digitalValue = digitalRead(12);
-Serial.print("LDR Value: ");
-Serial.println(digitalValue);
-delay(500); 
+  // Shows on terminal:
+  Serial.print("Luminosidade: ");
+  Serial.println(valorLuminosidade);
+  // Waits 2 secs for the next read
+  delay(2000);
 }
