@@ -1,30 +1,48 @@
-// Defines pins
+#include <Arduino.h>
+
 const int pinLDR = 12; 
 const int pinButton = 25;
 const int pinBuzzer = 33;
-int OldValue = LOW;
 
 void setup() {
-  // Inicializes communication with terminal
   Serial.begin(115200);
   pinMode(pinButton, INPUT);
+  pinMode(pinBuzzer, OUTPUT);
 }
 
 void loop() {
-  // Analog Reading
   int valorLuminosidade = analogRead(pinLDR);
   int NewValue = digitalRead(pinButton);
 
-if(NewValue == HIGH){
-  // Shows values on monitor
-  Serial.print("Luminosidade: ");
-  Serial.println(valorLuminosidade);
-  if(valorLuminosidade < 2000){ // Higher LUX
-    tone(pinBuzzer, 250, 300); //plays buzzer 25Hz for 0.300 miliseconds
+  // Proteção contra leitura zero (evita travar o cálculo)
+  if (valorLuminosidade == 0) valorLuminosidade = 1; 
+
+  // --- CÁLCULO DO LUX ---
+  float voltagem = valorLuminosidade * (3.3 / 4095.0);
+  float resistenciaLDR = (10000.0 * (3.3 - voltagem)) / voltagem;
+  
+  // Garante que a resistência não zere se a voltagem atingir o pico
+  if (resistenciaLDR <= 0) resistenciaLDR = 1; 
+  
+  // Cálculo final em Lux
+  float lux = pow(500000.0 / resistenciaLDR, 1.4);
+  // ----------------------
+
+  if(NewValue == HIGH){
+    Serial.print("Leitura ADC: ");
+    Serial.print(valorLuminosidade);
+    Serial.print(" | Voltagem: ");
+    Serial.print(voltagem);
+    Serial.print("V | Lux Calculado: ");
+    Serial.println(lux);
+
+    // Condicional baseada no Lux real estimado
+    if(lux > 500.0){ // Ambiente bem iluminado
+      tone(pinBuzzer, 250, 300); 
+    }
+    else{ // Ambiente escuro
+      tone(pinBuzzer, 400, 500);
+    }
   }
-  else{ // Lower LUX
-    tone(pinBuzzer, 400, 500);
-  }
-}
   delay(2000);
 }
