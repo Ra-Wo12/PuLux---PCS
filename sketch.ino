@@ -37,11 +37,23 @@ void loop() {
     Serial.println(lux);
 
     // Condicional baseada no Lux real estimado
-    if(lux > 500.0){ // Ambiente bem iluminado
-      tone(pinBuzzer, 250, 300); 
+    if(lux > 250.0){ // Ambiente bem iluminado
+      tone(pinBuzzer, 250, 250); 
+      delay(1000);
+      tone(pinBuzzer, 250, 250);
+      delay(1000);
+      tone(pinBuzzer, 250, 250);
     }
-    else{ // Ambiente escuro
-      tone(pinBuzzer, 400, 500);
+    else if(lux > 150.0 && lux <= 250.0){ 
+      tone(pinBuzzer, 250, 250);
+      delay(1000);
+      tone(pinBuzzer, 250, 250);
+    }
+    else if(lux > 50.0 && lux <= 150.0){
+      tone(pinBuzzer, 250, 250); 
+    }
+    else{
+      tone(pinBuzzer, 500, 500);
     }
   }
   delay(2000);
