@@ -1,5 +1,5 @@
 #include "BluetoothSerial.h"
-
+// Inicia biblioteca Bluetooth
 BluetoothSerial SerialBT;
 
 const int pinLDR = 18;      // Verifique se é um pino ADC válido
