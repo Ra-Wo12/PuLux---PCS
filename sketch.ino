@@ -4,17 +4,12 @@ BluetoothSerial SerialBT;
 
 const int pinLDR = 18;      // Verifique se é um pino ADC válido
 const int pinBotao = 19;
-const int pinLED = 22;
 
 void setup() {
   Serial.begin(115200);
   SerialBT.begin("ESP32_BT");
 
   pinMode(pinBotao, INPUT_PULLUP);
-
-  pinMode(pinLED, OUTPUT);
-  digitalWrite(pinLED, HIGH); // LED ligado permanentemente
-
   Serial.println("Bluetooth INICIADO");
 }
 
