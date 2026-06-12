@@ -4,7 +4,6 @@ BluetoothSerial SerialBT;
 
 const int pinoLDR = 34;
 const int pinoBotao = 4;
-const int pinoLed = 18;
 const int pinoMotor = 23;
 
 const float VCC = 3.3;
@@ -18,10 +17,7 @@ void setup() {
   SerialBT.begin("ESP32_Luminosidade");
 
   pinMode(pinoBotao, INPUT_PULLUP);
-  pinMode(pinoLed, OUTPUT);
   pinMode(pinoMotor, OUTPUT);
-
-  digitalWrite(pinoLed, HIGH);
   digitalWrite(pinoMotor, LOW);
 
   Serial.println("Sistema iniciado.");
@@ -55,12 +51,6 @@ void loop() {
     if (digitalRead(pinoBotao) == LOW) {
 
       Serial.println("\n=== BOTAO PRESSIONADO ===");
-
-      // Pisca LED para indicar o evento
-      digitalWrite(pinoLed, LOW);
-      delay(100);
-      digitalWrite(pinoLed, HIGH);
-
       int adc = analogRead(pinoLDR);
 
       if (adc < 1) adc = 1;
