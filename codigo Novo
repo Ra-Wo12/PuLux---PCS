@@ -1,0 +1,33 @@
+#include "BluetoothSerial.h"
+
+BluetoothSerial SerialBT;
+
+const int pinoLDR = 34;     
+const int pinoBotao = 4;    
+
+void setup() {
+  Serial.begin(115200);
+  SerialBT.begin("ESP32_Luminosidade"); 
+  pinMode(pinoBotao, INPUT_PULLUP); 
+  pinMode(pinoLDR, INPUT);
+
+  Serial.println("Bluetooth iniciado. Pareie com 'ESP32_Luminosidade'.");
+}
+
+void loop() {
+  
+  if (digitalRead(pinoBotao) == LOW) {
+    int leituraADC = analogRead(pinoLDR); 
+
+    
+    int luminosidade = map(leituraADC, 0, 4095, 0, 100);
+
+    String msg = "Leitura ADC: " + String(leituraADC) +
+                  "  ->  Luminosidade: " + String(luminosidade) + "%";
+
+    Serial.println(msg);
+    SerialBT.println(msg); 
+
+    delay(300); 
+  }
+}
