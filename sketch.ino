@@ -89,12 +89,24 @@ void loop() {
 
       SerialBT.println(msg);
 
-      if (lux > 50.0) {
+      if (lux > 250.0) {
         Serial.println("Luminosidade acima de 50 lux");
+        vibrar(3);
+      }
+      else if(lux > 150 && lux <= 250){
+        Serial.println("Luminosidade entre 150 lux e 250 lux");
         vibrar(2);
       }
-      else {
+      
+      else if(lux > 50 && lux <= 150){
+        Serial.println("Luminosidade entre 50 lux e 150 lux");
+        vibrar(1);
+      }
+      
+      else{
         Serial.println("Luminosidade abaixo de 50 lux");
+        vibrar(1);
+        delay(2000);
         vibrar(1);
       }
     }
