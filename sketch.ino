@@ -1,41 +1,52 @@
 #include "BluetoothSerial.h"
-// Inicia biblioteca Bluetooth
+
 BluetoothSerial SerialBT;
 
-const int pinLDR = 18;      // Verifique se é um pino ADC válido
-const int pinBotao = 19;
+const int pinoLDR = 34;
+const int pinoBotao = 4;
+const int pinoLed = 18;
+
+const float VCC = 3.3;
+const float R_FIXO = 10000.0; // resistor de 10kΩ
 
 void setup() {
   Serial.begin(115200);
-  SerialBT.begin("ESP32_BT");
 
-  pinMode(pinBotao, INPUT_PULLUP);
-  Serial.println("Bluetooth INICIADO");
+  SerialBT.begin("ESP32_Luminosidade");
+
+  pinMode(pinoBotao, INPUT_PULLUP);
+  pinMode(pinoLed, OUTPUT);
+
+  digitalWrite(pinoLed, HIGH);
+
+  Serial.println("Bluetooth iniciado.");
 }
 
 void loop() {
-  // Botão pressionado (INPUT_PULLUP => LOW)
-  if (digitalRead(pinBotao) == LOW) {
 
-    int leitura = analogRead(pinLDR);
+  if (digitalRead(pinoBotao) == LOW) {
 
-    int luminosidade = map(leitura, 0, 4095, 0, 100);
-    luminosidade = constrain(luminosidade, 0, 100);
+    int adc = analogRead(pinoLDR);
 
-    Serial.print("Luminosidade: ");
-    Serial.print(luminosidade);
-    Serial.println("%");
+    // Evita divisão por zero
+    if (adc < 1) adc = 1;
 
-    SerialBT.print("Luminosidade: ");
-    SerialBT.print(luminosidade);
-    SerialBT.println("%");
+    float tensao = adc * (VCC / 4095.0);
 
-    // Aguarda soltar o botão
-    while (digitalRead(pinBotao) == LOW) {
-      delay(10);
-    }
+    // Resistência do LDR
+    float rLDR = R_FIXO * ((VCC / tensao) - 1.0);
 
-    // Debounce
-    delay(50);
+    // Aproximação para LDR tipo GL5528
+    float lux = 500.0 / pow((rLDR / 1000.0), 1.4);
+
+    String msg =
+      "ADC: " + String(adc) +
+      " | Tensao: " + String(tensao, 2) + " V" +
+      " | Lux: " + String(lux, 1);
+
+    Serial.println(msg);
+    SerialBT.println(msg);
+
+    delay(300);
   }
 }
